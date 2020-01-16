@@ -1,4 +1,26 @@
 {% extends 'base.html' %}
+{% block title %}
+Login
+{% endblock %}
 {% block content %}
-asdasdas
+<h1>Login</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group">
+    {{ form.username.label_tag }}
+    {{ form.username }}
+    <small id="usernameHelp" class="form-text text-muted">{{ form.username.errors }}</small>
+    </div>
+
+    <div class="form-group">
+    {{ form.password.label_tag }}
+    {{ form.password }}
+    <small id="password2Help" class="form-text text-muted">{{ form.password.errors }}</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sign up</button>
+
+  </form>
+
 {% endblock %}

@@ -1,22 +1,43 @@
 from django.contrib import messages
+from django.contrib.auth import authenticate, logout, login
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .forms import RegistrationForm
+from .forms import RegistrationForm, LoginForm
 
 
 def user_registration(request):
-    user_form = RegistrationForm()
+    form = RegistrationForm()
     if request.method == 'POST':
-        user_form = RegistrationForm(request.POST)
-        if user_form.is_valid():
-            user_form.save()
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
             messages.success(request, 'Successful registration')
             return redirect(reverse('users:login'))
     return render(request, 'users/registration.html', {
-        "user_form": user_form,
+        "form": form,
     })
 
 
 def user_login(request):
-    return render(request, 'users/login.html')
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = authenticate(request,
+                                username=form.cleaned_data['username'],
+                                password=form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+                messages.success(request, 'Successful login')
+                return redirect(reverse('mainapp:index'))
+            messages.warning(request, 'Something wrong!')
+    return render(request, 'users/login.html', {
+        'form': form,
+    })
+
+
+def user_logout(request):
+    logout(request)
+    messages.success(request, 'You are logged out')
+    return redirect(reverse('users:login'))
