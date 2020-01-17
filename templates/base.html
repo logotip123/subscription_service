@@ -24,8 +24,18 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'categories:index' %}">Categories</a>
+      </li>
+
+    </ul>
+
     <ul class="navbar-nav ml-auto mr-5">
         {% if request.user.is_authenticated %}
+        <li class="nav-item">
+        <a class="nav-link" href="">Welcome {{ user.email }}</a>
+      </li>
         <li class="nav-item">
         <a class="nav-link" href="{% url 'users:logout' %}">Logout</a>
       </li>
@@ -50,7 +60,7 @@
             {% if messages %}
         <ul class="messages" style="list-style-type: none;">
             {% for message in messages %}
-            <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
             {% endfor %}
         </ul>
         {% endif %}

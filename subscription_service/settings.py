@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+
+from django.contrib import messages
 from environs import Env
 
 env = Env()
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'mainapp.apps.MainappConfig',
+    'categories.apps.CategoriesConfig',
 ]
 
 MIDDLEWARE = [
@@ -128,5 +131,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-if __name__ == "__main__":
-    print(SECRET_KEY)
+PROJECT_VARIABLES = {
+    'category_name_max_length': 500
+}
+
+MESSAGE_TAGS = {
+    messages.SUCCESS: 'alert alert-success',
+    messages.WARNING: 'alert alert-warning',
+    messages.INFO: 'alert alert-info',
+    messages.ERROR: 'alert alert-danger',
+    messages.DEBUG: 'alert alert-dark',
+}
