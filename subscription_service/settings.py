@@ -131,7 +131,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 PROJECT_VARIABLES = {
-    'category_name_max_length': 500
+    'category_name_max_length': 500,
+    'product_title_max_length': 250
 }
 
 MESSAGE_TAGS = {

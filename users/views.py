@@ -30,7 +30,7 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Successful login')
-                return redirect(reverse('mainapp:index'))
+                return redirect(reverse('main_app:index'))
             messages.warning(request, 'Something wrong!')
     return render(request, 'users/login.html', {
         'form': form,
