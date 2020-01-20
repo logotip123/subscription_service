@@ -15,11 +15,11 @@ def get_categories(request):
     categories = Categories.objects.all()
     if request.POST:
         if 'subscribe' in request.POST:
-            category = Categories.objects.filter(name=request.POST['subscribe']).first()
+            category = categories.filter(name=request.POST['subscribe']).first()
             request.user.user_cabinet.subscriptions.add(category)
             messages.success(request, f"Subscribe to {category.name} was successful")
         elif 'unsubscribe' in request.POST:
-            category = Categories.objects.filter(name=request.POST['unsubscribe']).first()
+            category = categories.filter(name=request.POST['unsubscribe']).first()
             request.user.user_cabinet.subscriptions.remove(category)
             messages.success(request, "Unsubscribe was successful")
         else:
