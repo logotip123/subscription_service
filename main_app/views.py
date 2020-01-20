@@ -1,8 +1,7 @@
-import datetime
-
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.utils import timezone
 
 from .models import Categories, Product
 
@@ -20,7 +19,7 @@ def get_categories(request):
 
 def get_category(request, category_slug):
     category = get_object_or_404(Categories, slug=category_slug)
-    products = Product.objects.filter(category=category, relevant__gte=datetime.datetime.now())
+    products = Product.objects.filter(category=category, relevant__gte=timezone.now())
     if not products:
         messages.warning(request, f'Category "{category}" is empty')
     return render(request, "main_app/category.html", {
