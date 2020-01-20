@@ -13,19 +13,19 @@ def get_index(request):
 
 def get_categories(request):
     categories = Categories.objects.all()
-    user_cabinet = UserCabinet.objects.filter(user__username=request.user.username).first()
     if request.POST:
         if 'subscribe' in request.POST:
-            subscribe = Categories.objects.filter(name=request.POST['subscribe']).first()
-            user_cabinet.subscriptions.add(subscribe)
-            messages.success(request, f"Subscribe to {subscribe.name} was successful")
+            category = Categories.objects.filter(name=request.POST['subscribe']).first()
+            request.user.user_cabinet.subscriptions.add(category)
+            messages.success(request, f"Subscribe to {category.name} was successful")
         elif 'unsubscribe' in request.POST:
-            subscribe = Categories.objects.filter(name=request.POST['unsubscribe']).first()
-            user_cabinet.subscriptions.remove(subscribe)
+            category = Categories.objects.filter(name=request.POST['unsubscribe']).first()
+            request.user.user_cabinet.subscriptions.remove(category)
             messages.success(request, "Unsubscribe was successful")
+        else:
+            pass
     return render(request, "main_app/categories.html", {
         'categories': categories,
-        'user_cabinet': user_cabinet
     })
 
 
