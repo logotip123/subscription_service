@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import UserCabinet
+
+
+@admin.register(UserCabinet)
+class ProductAdmin(admin.ModelAdmin):
+    exclude = ('user',)

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from .forms import RegistrationForm, LoginForm
+from .models import UserCabinet
 
 
 def user_registration(request):
@@ -11,7 +12,8 @@ def user_registration(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            UserCabinet.objects.create(user=user)
             messages.success(request, 'Successful registration')
             return redirect(reverse('users:login'))
     return render(request, 'users/registration.html', {
