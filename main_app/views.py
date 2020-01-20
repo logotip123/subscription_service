@@ -17,11 +17,11 @@ def get_categories(request):
         if 'subscribe' in request.POST:
             category = categories.filter(name=request.POST['subscribe']).first()
             request.user.user_cabinet.subscriptions.add(category)
-            messages.success(request, f"Subscribe to {category.name} was successful")
+            messages.success(request, f"Subscribing to {category.name} was successful")
         elif 'unsubscribe' in request.POST:
             category = categories.filter(name=request.POST['unsubscribe']).first()
             request.user.user_cabinet.subscriptions.remove(category)
-            messages.success(request, "Unsubscribe was successful")
+            messages.success(request, f"Unsubscribe from {category.name} was successful")
         else:
             pass
     return render(request, "main_app/categories.html", {
