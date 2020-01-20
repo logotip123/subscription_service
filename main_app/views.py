@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from .models import Categories, Product
@@ -17,13 +17,11 @@ def get_categories(request):
 
 
 def get_category(request, category_slug):
-    products = Product.objects.filter(category__slug=category_slug).all()
-    try:
-        category = products[0].category.name
-    except IndexError:
-        messages.warning(request, f'Category "{category_slug}" does not exist or empty')
-        return redirect(reverse('main_app:categories'))
+    category = get_object_or_404(Categories, slug=category_slug)
+    products = Product.objects.filter(category=category).all()
+    if not products:
+        messages.warning(request, f'Category "{category}" is empty')
     return render(request, "main_app/category.html", {
-        'products': products,
-        'category': category
+        'category': category,
+        'products': products
     })
