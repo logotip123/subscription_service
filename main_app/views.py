@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
@@ -22,16 +23,22 @@ def get_categories(request):
             category = categories.filter(name=request.POST['unsubscribe']).first()
             request.user.user_cabinet.subscriptions.remove(category)
             messages.success(request, f"Unsubscribe from {category.name} was successful")
-            if "next" in request.GET:
-                return redirect(request.GET['next'])
         else:
             pass
+        if "next" in request.GET:
+            return redirect(request.GET['next'])
     return render(request, "main_app/categories.html", {
         'categories': categories,
     })
 
+
+@login_required()
 def get_category(request, category_slug):
     category = get_object_or_404(Categories, slug=category_slug)
+    if category not in request.user.user_cabinet.subscriptions.all():
+        return render(request, "main_app/subscribe.html", {
+            'category': category,
+        })
     products = Product.objects.filter(category=category, relevant__gte=timezone.now())
     if not products:
         messages.warning(request, f'Category "{category}" is empty')
