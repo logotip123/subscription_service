@@ -3,6 +3,7 @@
 Login
 {% endblock %}
 {% block content %}
+{% if not user.is_authenticated %}
 <h1>Login</h1>
 <form method="post">
     {% csrf_token %}
@@ -22,5 +23,7 @@ Login
     <button type="submit" class="btn btn-dark">Sign up</button>
 
   </form>
-
+{% else %}
+<h3>You are logged now</h3>
+{% endif %}
 {% endblock %}

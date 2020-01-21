@@ -22,12 +22,13 @@ def get_categories(request):
             category = categories.filter(name=request.POST['unsubscribe']).first()
             request.user.user_cabinet.subscriptions.remove(category)
             messages.success(request, f"Unsubscribe from {category.name} was successful")
+            if "next" in request.GET:
+                return redirect(request.GET['next'])
         else:
             pass
     return render(request, "main_app/categories.html", {
         'categories': categories,
     })
-
 
 def get_category(request, category_slug):
     category = get_object_or_404(Categories, slug=category_slug)

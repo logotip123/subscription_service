@@ -3,6 +3,7 @@
 Registration
 {% endblock %}
 {% block content %}
+{% if not user.is_authenticated %}
 <h1>Registration</h1>
 <form method="post">
     {% csrf_token %}
@@ -34,5 +35,8 @@ Registration
     <button type="submit" class="btn btn-dark">Sign up</button>
 
   </form>
+{% else %}
+<h3>You are logged now</h3>
+{% endif %}
 
 {% endblock %}

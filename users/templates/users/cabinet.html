@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ user.username }} Cabinet
+{% endblock %}
+{% block content %}
+<h2>{{ user.username }} subscriptions:</h2>
+{% for category in user.user_cabinet.subscriptions.all %}
+<div class="row mt-3">
+    <h3>{{ category.name }}</h3>
+    <div class="ml-auto">
+        <form method="POST" action="{% url 'main_app:categories' %}?next={% url 'users:cabinet' %}">
+        {% csrf_token %}
+            <input type="hidden" name="unsubscribe" value="{{ category.name }}">
+            <button type="submit" class="btn btn-dark">Unsubscribe</button>
+        </form>
+    </div>
+</div>
+<div class="row mt-3">
+  {{ category.description }}
+</div>
+<div class="row border-bottom">
+    <div class="ml-auto">
+        <small class="text-muted">{{ category.created }}</small>
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}
