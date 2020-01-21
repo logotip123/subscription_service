@@ -5,7 +5,6 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .models import Categories, Product
-from users.models import UserCabinet
 
 
 def get_index(request):

@@ -1,8 +1,15 @@
 from django.contrib import admin
 
-from .models import UserCabinet
+from .models import UserCabinet, SendMails
 
 
-@admin.register(UserCabinet)
-class ProductAdmin(admin.ModelAdmin):
+class SendMailsAdmin(admin.TabularInline):
+    model = SendMails
+
+
+class UserCabinetAdmin(admin.ModelAdmin):
+    inlines = (SendMailsAdmin,)
     exclude = ('user',)
+
+
+admin.site.register(UserCabinet, UserCabinetAdmin)

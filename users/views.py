@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from .forms import RegistrationForm, LoginForm
-from .models import UserCabinet
+from .models import UserCabinet, SendMails
 
 
 def user_registration(request):
@@ -50,4 +50,6 @@ def user_logout(request):
 
 @login_required()
 def get_cabinet(request):
+    a = SendMails.objects.all()
+    print(a)
     return render(request, "users/cabinet.html")
