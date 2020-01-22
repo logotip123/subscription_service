@@ -8,7 +8,7 @@ Categories
     <h3>{{ category.name }}</h3>
     {% if user.is_authenticated %}
     <div class="ml-auto">
-        {% if category in user.user_cabinet.subscriptions.all %}
+        {% if user in category.subscribers.all %}
         <form method="POST">
         {% csrf_token %}
             <input type="hidden" name="unsubscribe" value="{{ category.name }}">
