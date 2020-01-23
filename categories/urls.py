@@ -3,7 +3,7 @@ from django.urls import path
 from .views import get_categories, get_index, get_category
 
 
-app_name = "main_app"
+app_name = "categories"
 
 urlpatterns = [
     path('', get_index, name='index'),

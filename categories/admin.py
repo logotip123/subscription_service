@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import Categories, Product, SendMails
+from .models import Categories, Product, EmailSubscribe
 
 
 class SendMailsAdmin(admin.TabularInline):
-    model = SendMails
+    model = EmailSubscribe
 
 
 class CategoriesAdmin(admin.ModelAdmin):

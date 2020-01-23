@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
-    'main_app.apps.MainAppConfig',
+    'categories.apps.CategoriesConfig',
 ]
 
 MIDDLEWARE = [
@@ -126,11 +126,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-PROJECT_VARIABLES = {
-    'category_name_max_length': 500,
-    'product_title_max_length': 250
-}
 
 MESSAGE_TAGS = {
     messages.SUCCESS: 'alert alert-success',

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from main_app.models import Categories
+from categories.models import Categories, EmailSubscribe
 from .forms import RegistrationForm, LoginForm
 
 
@@ -34,7 +34,7 @@ def user_login(request):
                 messages.success(request, 'Successful login')
                 if "next" in request.GET:
                     return redirect(request.GET['next'])
-                return redirect(reverse('main_app:index'))
+                return redirect(reverse('categories:index'))
             messages.warning(request, 'Something wrong!')
     return render(request, 'users/login.html', {
         'form': form,
@@ -52,10 +52,7 @@ def get_cabinet(request):
     categories = Categories.objects.filter(subscribers=request.user).all()
     if request.method == "POST":
         if "send_emails" in request.POST:
-            category = categories.filter(name=request.POST["send_emails"]).first()
-            through = category.sendmails_set.filter(user=request.user).first()
-            through.send_email = False
-            through.save()
+            pass
 
     return render(request, "users/cabinet.html", {
         'categories': categories

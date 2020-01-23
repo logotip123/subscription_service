@@ -8,7 +8,7 @@ from .models import Categories, Product
 
 
 def get_index(request):
-    return render(request, 'main_app/index.html')
+    return render(request, 'categories/index.html')
 
 
 def get_categories(request):
@@ -26,7 +26,7 @@ def get_categories(request):
             pass
         if "next" in request.GET:
             return redirect(request.GET['next'])
-    return render(request, "main_app/categories.html", {
+    return render(request, "categories/categories.html", {
         'categories': categories,
     })
 
@@ -35,13 +35,13 @@ def get_categories(request):
 def get_category(request, category_slug):
     category = get_object_or_404(Categories, slug=category_slug)
     if category not in request.user.user_cabinet.subscriptions.all():
-        return render(request, "main_app/subscribe.html", {
+        return render(request, "categories/subscribe.html", {
             'category': category,
         })
     products = Product.objects.filter(category=category, relevant__gte=timezone.now())
     if not products:
         messages.warning(request, f'Category "{category}" is empty')
-    return render(request, "main_app/category.html", {
+    return render(request, "categories/category.html", {
         'category': category,
         'products': products
     })
