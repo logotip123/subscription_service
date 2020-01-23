@@ -34,7 +34,7 @@
     <ul class="navbar-nav ml-auto mr-5">
         {% if request.user.is_authenticated %}
         <li class="nav-item">
-        <a class="nav-link" href="{% url 'users:cabinet' %}">{{ user.username }} cabinet</a>
+        <a class="nav-link" href="{% url 'categories:cabinet' %}">{{ user.username }} cabinet</a>
       </li>
         <li class="nav-item">
         <a class="nav-link" href="{% url 'users:logout' %}">Logout</a>

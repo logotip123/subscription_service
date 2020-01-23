@@ -47,13 +47,3 @@ def user_logout(request):
     return redirect(reverse('users:login'))
 
 
-@login_required()
-def get_cabinet(request):
-    categories = Categories.objects.filter(subscribers=request.user).all()
-    if request.method == "POST":
-        if "send_emails" in request.POST:
-            pass
-
-    return render(request, "users/cabinet.html", {
-        'categories': categories
-    })

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import Categories, Product
+from .models import Categories, Product, EmailSubscribe
 
 
 def get_index(request):
@@ -34,14 +34,32 @@ def get_categories(request):
 @login_required()
 def get_category(request, category_slug):
     category = get_object_or_404(Categories, slug=category_slug)
-    if category not in request.user.user_cabinet.subscriptions.all():
+    """if category not in request.user.user_cabinet.subscriptions.all():
         return render(request, "categories/subscribe.html", {
             'category': category,
-        })
+        })"""
     products = Product.objects.filter(category=category, relevant__gte=timezone.now())
     if not products:
         messages.warning(request, f'Category "{category}" is empty')
     return render(request, "categories/category.html", {
         'category': category,
         'products': products
+    })
+
+
+@login_required()
+def get_cabinet(request):
+    categories = EmailSubscribe.objects.filter(user=request.user).all()
+    if request.method == "POST":
+        if "send_emails" in request.POST:
+            category = categories.filter(category__name=request.POST['send_emails']).first()
+            category.send_email = True
+            category.save()
+        elif "dont_send_emails" in request.POST:
+            category = categories.filter(category__name=request.POST['dont_send_emails']).first()
+            category.send_email = False
+            category.save()
+
+    return render(request, "categories/cabinet.html", {
+        "categories": categories
     })
