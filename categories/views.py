@@ -34,11 +34,7 @@ def get_categories(request):
 @login_required()
 def get_category(request, category_slug):
     category = get_object_or_404(Categories, slug=category_slug)
-    """if category not in request.user.user_cabinet.subscriptions.all():
-        return render(request, "categories/subscribe.html", {
-            'category': category,
-        })"""
-    products = Product.objects.filter(category=category, relevant__gte=timezone.now())
+    products = Product.objects.filter(category=category, relevant__gte=timezone.now()).all()
     if not products:
         messages.warning(request, f'Category "{category}" is empty')
     return render(request, "categories/category.html", {
@@ -59,6 +55,8 @@ def get_cabinet(request):
             category = categories.filter(category__name=request.POST['dont_send_emails']).first()
             category.send_email = False
             category.save()
+        else:
+            pass
 
     return render(request, "categories/cabinet.html", {
         "categories": categories

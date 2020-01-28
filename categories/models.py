@@ -1,5 +1,3 @@
-import datetime
-
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
@@ -32,7 +30,6 @@ class EmailSubscribe(models.Model):
 
 class Product(models.Model):
     title = models.CharField(max_length=250)
-    slug = models.SlugField(unique=True)
     created = models.DateField(auto_now_add=True)
     relevant = models.DateTimeField(verbose_name="Relevant until")
     description = models.TextField()
@@ -40,8 +37,7 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            date = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
-            self.slug = slugify(str(self.title) + date)
+            pass
         super().save(*args, **kwargs)
 
     def __str__(self):
