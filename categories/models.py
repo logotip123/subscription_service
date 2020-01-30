@@ -21,7 +21,7 @@ class Categories(models.Model):
 
 class EmailSubscribe(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    category = models.ForeignKey(Categories, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(Categories, on_delete=models.DO_NOTHING, related_name='subs')
     send_email = models.BooleanField(default=True)
 
     def __str__(self):
@@ -33,7 +33,7 @@ class Product(models.Model):
     created = models.DateField(auto_now_add=True)
     relevant = models.DateTimeField(verbose_name="Relevant until")
     description = models.TextField()
-    category = models.ForeignKey(Categories, on_delete=models.CASCADE)
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE, related_name='product')
 
     def save(self, *args, **kwargs):
         if not self.id:

@@ -32,7 +32,7 @@
     </ul>
 
     <ul class="navbar-nav ml-auto mr-5">
-        {% if request.user.is_authenticated %}
+        {% if user.is_authenticated %}
         <li class="nav-item">
         <a class="nav-link" href="{% url 'categories:cabinet' %}">{{ user.username }} cabinet</a>
       </li>
@@ -49,11 +49,13 @@
       </li>
         {% endif %}
     </ul>
-
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    {% if user.is_authenticated %}
+    <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'categories:search_result' %}">
+        {% csrf_token %}
+      {{ search_form.search }}
       <button class="btn btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
     </form>
+      {% endif %}
   </div>
 </nav>
     <div class="container my-3">

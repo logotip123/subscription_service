@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import Categories, Product, EmailSubscribe
+from .models import Categories, EmailSubscribe, Product
+from .forms import SearchForm
 
 
 def get_index(request):
@@ -34,7 +36,7 @@ def get_categories(request):
 @login_required()
 def get_category(request, category_slug):
     category = get_object_or_404(Categories, slug=category_slug)
-    products = Product.objects.filter(category=category, relevant__gte=timezone.now()).all()
+    products = category.product.filter(relevant__gte=timezone.now()).all()
     if not products:
         messages.warning(request, f'Category "{category}" is empty')
     return render(request, "categories/category.html", {
@@ -60,4 +62,27 @@ def get_cabinet(request):
 
     return render(request, "categories/cabinet.html", {
         "categories": categories
+    })
+
+@login_required()
+def get_search_results(request):
+    categories = ""
+    products = ""
+    if request.method == "POST":
+        form = SearchForm(request.POST)
+        if not form.is_valid():
+            messages.warning(request, 'Form is invalid')
+            redirect(reverse("categories:index"))
+        q_obj_category = Q()
+        q_obj_product = Q()
+        serch_by = form.cleaned_data['search'].split()
+        for word in serch_by:
+            q_obj_category |= Q(name__icontains=word)
+            q_obj_product |= Q(title__icontains=word)
+        categories = Categories.objects.filter(q_obj_category).all()
+        products = Product.objects.filter(q_obj_product).all()
+
+    return render(request, "categories/search_result.html", {
+        'categories': categories,
+        'products': products
     })
