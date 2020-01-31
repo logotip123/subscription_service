@@ -2,9 +2,11 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
 
+from .tasks import send_emails
+
 
 class Categories(models.Model):
-    name = models.CharField(unique=True, max_length=250)
+    name = models.CharField(unique=True, max_length=250, db_index=True)
     slug = models.SlugField(unique=True, null=True)
     created = models.DateField(auto_now_add=True)
     description = models.TextField(blank=True, null=True)
@@ -29,7 +31,7 @@ class EmailSubscribe(models.Model):
 
 
 class Product(models.Model):
-    title = models.CharField(max_length=250)
+    title = models.CharField(max_length=250, db_index=True)
     created = models.DateField(auto_now_add=True)
     relevant = models.DateTimeField(verbose_name="Relevant until")
     description = models.TextField()
@@ -37,7 +39,9 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            pass
+            emails = [email_obj.user.email for email_obj in EmailSubscribe.objects.filter(category=self.category,
+                                                                                          send_email=True).all()]
+            send_emails(self.title, self.description, emails)
         super().save(*args, **kwargs)
 
     def __str__(self):

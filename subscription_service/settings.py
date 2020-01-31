@@ -137,3 +137,15 @@ MESSAGE_TAGS = {
 }
 
 LOGIN_URL = 'users:login'
+
+CELERY_BROKER_URL = env.str('BROKER_URL')
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = '25'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False
+EMAIL_SENDER = "admin@sub_service.com"

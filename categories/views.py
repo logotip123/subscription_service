@@ -75,8 +75,8 @@ def get_search_results(request):
             redirect(reverse("categories:index"))
         q_obj_category = Q()
         q_obj_product = Q()
-        serch_by = form.cleaned_data['search'].split()
-        for word in serch_by:
+        search_by = form.cleaned_data['search'].split()
+        for word in search_by:
             q_obj_category |= Q(name__icontains=word)
             q_obj_product |= Q(title__icontains=word)
         categories = Categories.objects.filter(q_obj_category).all()
