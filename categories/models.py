@@ -41,7 +41,7 @@ class Product(models.Model):
         if not self.id:
             emails = [email_obj.user.email for email_obj in EmailSubscribe.objects.filter(category=self.category,
                                                                                           send_email=True).all()]
-            send_emails(self.title, self.description, emails)
+            send_emails.delay(self.title, self.description, emails)
         super().save(*args, **kwargs)
 
     def __str__(self):
