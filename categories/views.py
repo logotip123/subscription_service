@@ -4,9 +4,21 @@ from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
+from rest_framework import viewsets
 
 from .models import Categories, EmailSubscribe, Product
 from .forms import SearchForm
+from .serializers import CategorySerializer, ProductsSerializer
+
+
+class CategoriesViewSet(viewsets.ModelViewSet):
+    queryset = Categories.objects.all()
+    serializer_class = CategorySerializer
+
+
+class ProductsViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductsSerializer
 
 
 def get_index(request):
@@ -63,6 +75,7 @@ def get_cabinet(request):
     return render(request, "categories/cabinet.html", {
         "categories": categories
     })
+
 
 @login_required()
 def get_search_results(request):
