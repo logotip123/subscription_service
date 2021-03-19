@@ -5,7 +5,7 @@ celery==4.4.0
 dj-database-url==0.5.0
 dj-email-url==0.2.0
 Django==3.0.2
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 environs==7.1.0
 importlib-metadata==1.4.0
 kombu==4.6.7
